@@ -1,18 +1,52 @@
+import pickle
+import numpy as np
+import pandas as pd
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from google.cloud import bigquery
-from bigquery import query_bigquery
+from sklearn.preprocessing import StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.ensemble import RandomForestRegressor  # Example model; use your trained model
+from database import skew_features, continuous_features, binary_features ,query_bigquery
+from models import UserInput
 
+# Load the pre-trained model and preprocessor (Scaler and ColumnTransformer)
+with open("model.pkl", "rb") as f:
+    model = pickle.load(f)
+
+with open("scaler.pkl", "rb") as f:
+    preprocessor = pickle.load(f)
+
+# Define FastAPI app
 app = FastAPI()
 
-# Define request structure
-class UserSelection(BaseModel):
-    university_name: str
-    faculty: str
-    department: str
-    scholarship_rate: float
-    language: str
 
+
+@app.post("/predict/")
+def predict(user_input: UserInput):
+    """Preprocess user input and predict based on trained model."""
+    
+    # Convert input to DataFrame
+    user_df = pd.DataFrame([user_input.other_features], columns=continuous_features + binary_features)
+    
+    # Apply log transformation to skewed features (to handle skewness)
+    user_df[skew_features] = user_df[skew_features] + 0.1  # Add small constant to avoid log(0)
+    user_df[skew_features] = np.log1p(user_df[skew_features])
+    
+    # Drop baseRanking from the input
+    user_df = user_df.drop(columns=['baseRanking'])
+    user_df = user_df.drop(columns=['idOSYM_flag'])
+    
+    # Apply the saved preprocessor (StandardScaler + other transformations)
+    processed_input = preprocessor.transform(user_df)
+    
+    # Convert back to DataFrame
+    processed_df = pd.DataFrame(processed_input, columns=continuous_features + binary_features)
+    
+    # Make prediction using the loaded model
+    prediction = model.predict(processed_df)
+    
+    # Return prediction result
+    return {"prediction": prediction.tolist()}
 
 @app.get("/universities/")
 def list_universities():
@@ -71,7 +105,7 @@ def list_scholarship_rates(university_name: str, faculty: str, department: str, 
 
 
 @app.post("/predict/")
-def predict_program(user_input: UserSelection):
+def predict_program(user_input: UserInput):
     """Returns filtered university programs based on user selection."""
     query = f"""
         SELECT *
