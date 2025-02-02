@@ -1,0 +1,13 @@
+201190057/2022 baseRanking 156->156000
+
+
+
+125.458
+125.000, 125.000, 125
+
+
+topscore basescore excel dosyasından boşlar dolduralacak  ???
+baseranking giren kişi 0'sa o sene sınava giren kişi sayısına eşit olacak giren kişi sayısı da tutulsun ----
+1 ve 2 kotalı bölümler datasetten atılacak ---
+büyük fark yemiş 128000 ken 128 e düşenler rescrape. ----
+
