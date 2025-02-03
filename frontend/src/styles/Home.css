@@ -1,0 +1,141 @@
+.home {
+    display: flex;
+}
+.home .welcome {
+    margin-top: 15%;
+    margin-left: 2%;
+    display: flex;
+    justify-content: left;
+    gap: 70px;
+    align-items: center;
+    animation: slideFromLeft 1.2s ease-out;
+    width: auto;
+}
+
+.home .welcome .title {
+    font-size: 70px;
+}
+.home .welcome .logo {
+    width: 300px;
+    height: auto;
+}
+
+.home .buttons {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin-top: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    animation: slideFromRight 1.2s ease-out;
+}
+
+.home .buttons .circle-button {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: none;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: var(--text-color);
+    background-color: var(--custom-green);
+    transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+
+}
+.home .buttons .circle-button:hover {
+    color: var(--text-color-hover);
+    background-color: var(--custom-green-dark);
+    transform: scale(1.1);
+}
+
+.home .buttons .circle-button-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    /* Use the custom property --angle to calculate the transform */
+    transform: translate(-50%, -50%)
+    rotate(var(--angle))
+    translateY(-170px)
+    rotate(calc(-1 * var(--angle)))
+    translateX(-170px);
+}
+
+
+/*
+.home .buttons .circle-button:nth-child(1) {
+    transform: translate(-50%, -50%) rotate(0deg) translateY(-120px) rotate(0deg);
+}
+
+.home .buttons .circle-button:nth-child(2) {
+    transform: translate(-50%, -50%) rotate(72deg) translateY(-120px) rotate(-72deg);
+}
+
+.home .buttons .circle-button:nth-child(3) {
+    transform: translate(-50%, -50%) rotate(144deg) translateY(-120px) rotate(-144deg);
+}
+
+.home .buttons .circle-button:nth-child(4) {
+    transform: translate(-50%, -50%) rotate(216deg) translateY(-120px) rotate(-216deg);
+}
+
+.home .buttons .circle-button:nth-child(5) {
+    transform: translate(-50%, -50%) rotate(288deg) translateY(-120px) rotate(-288deg);
+}
+*/
+
+
+
+
+
+
+@keyframes slideFromAbove {
+    from{
+        transform: translateY(-400%);
+        opacity: 0;
+    }
+    to{
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}
+
+@keyframes slideFromBelow {
+    from{
+        transform: translateY(400%);
+        opacity: 0;
+    }
+    to{
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}
+
+
+
+@keyframes slideFromLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

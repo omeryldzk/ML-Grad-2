@@ -3,13 +3,23 @@
   font-style: normal;
   font-weight: 400;
 
-  color: #3b4c4c;
-  background-color: #E5E5CC;
+  color: var(--text-color);
+  background-color: var(--background-color);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --text-color: #3b4c4c;
+  --text-color-hover: #5e7878;
+  --background-color: #E5E5CC;
+  --custom-red: #C69191;
+  --custom-red-dark: #B76868;
+  --custom-yellow: #D3BF86;
+  --custom-yellow-dark: #B9A469;
+  --custom-green: #A8CC85;
+  --custom-green-dark: #91AE73;
 }
 
 

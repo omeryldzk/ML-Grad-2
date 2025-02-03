@@ -1,8 +1,9 @@
 
 const SelectProgram = () => {
     return (
-        <div className="main-body">
-            Hello
+        <div className="select-program">
+
+
         </div>
     )
 }
