@@ -1,0 +1,16 @@
+:root {
+  font-family: "IBM Plex Sans", serif, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+
+  color: #3b4c4c;
+  background-color: #E5E5CC;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+
