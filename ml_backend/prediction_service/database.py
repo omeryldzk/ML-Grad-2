@@ -1,32 +1,141 @@
 from google.cloud import bigquery
+import logging
+from typing import List, Dict, Any
 
-# Initialize BigQuery client
-client = bigquery.Client.from_service_account_json("service-account.json")
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-DATASET_ID = "university_data"
-TABLE_ID = "departments"
+class DatabaseManager:
+    """Manages database connections and operations for university ranking prediction."""
+    
+    def __init__(self, service_account_path: str):
+        """
+        Initialize BigQuery client.
+        
+        Args:
+            service_account_path (str): Path to service account JSON
+        """
+        try:
+            self.client = bigquery.Client.from_service_account_json(service_account_path)
+            self.dataset_id = "string_dataset"
+        except Exception as e:
+            logger.error(f"BigQuery initialization error: {e}")
+            raise
 
-def query_bigquery(query: str):
-    """Executes a query and returns the result as a list of dictionaries."""
-    query_job = client.query(query)
-    results = query_job.result()
-    return [dict(row) for row in results]
+    def execute_query(self, query: str) -> List[Dict[str, Any]]:
+        """
+        Execute BigQuery query and return results.
+        
+        Args:
+            query (str): SQL query to execute
+        
+        Returns:
+            List of dictionaries with query results
+        """
+        try:
+            query_job = self.client.query(query)
+            results = query_job.result()
+            return [dict(row) for row in results]
+        except Exception as e:
+            logger.error(f"Query execution error: {e}")
+            raise
 
-# Define feature types
-skew_features = ['quota', 'occupiedSlots', 'tuitionFee', 'profCount', 'assoCount', 'docCount', 'revenue', 
-                 'totalPreference', 'top1PreferenceRatio', 'avgAdmittedStudentPrefOrder', 'top10AdmittedRatio', 
-                 'admittedTotalPref', 'admittedTotalDepartmentPref', 'currentStudentCount', 'totalForeignStudents']
+    def get_universities(self) -> List[str]:
+        """
+        Retrieve list of available universities.
+        
+        Returns:
+            List of university names
+        """
+        query = f"SELECT DISTINCT universityName FROM `{self.dataset_id}.uni_list`"
+        return [row['universityName'] for row in self.execute_query(query)]
 
-continuous_features = ['academicYear', 'universityName', 'faculty', 'departmentName', 'idOSYM', 'scholarshipRate', 
-                       'universityLocation', 'universityRegion', 'topRanking', 'avgAdmissionRanking', 'baseAdmissionRanking', 
-                       'stdDeviationStudents', 'outOfCityStudentRate', 'avgOrderofPreference', 'top1AdmittedRatio', 
-                       'top3AdmittedRatio', 'baseScore', 'topScore', 'totalStudentNumber', 'Urap_Rank', 'Urap_Score', 
-                       'avg_monthly_income_group', 'Time_for_employment', 'employment_rate', 'base_salary_by_year', 
-                       'inflation_by_year', 'growth_by_year']
+    def get_faculties(self, university_name: str) -> List[str]:
+        """
+        Retrieve faculties for a specific university.
+        
+        Args:
+            university_name (str): Name of the university
+        
+        Returns:
+            List of faculty names
+        """
+        query = f"""
+            SELECT DISTINCT faculty
+            FROM `{self.dataset_id}.uni_list`
+            WHERE universityName = '{university_name}'
+        """
+        return [row['faculty'] for row in self.execute_query(query)]
 
-binary_features = [
-    'universityType_devlet', 'universityType_vakıf', 'programType_DİL', 'programType_EA', 'programType_SAY', 
-    'programType_SÖZ', 'language_Almanca', 'language_Arapça', 'language_Bulgarca', 'language_Ermenice', 
-    'language_Fransızca', 'language_Korece', 'language_Lehçe', 'language_Rusça', 'language_Türkçe', 'language_Çince', 
-    'language_İngilizce', 'language_İspanyolca', 'language_İtalyanca', 'baseRanking', 'idOSYM_flag'
-]
+    def get_departments(self, university_name: str, faculty: str) -> List[str]:
+        """
+        Retrieve departments for a specific university and faculty.
+        
+        Args:
+            university_name (str): Name of the university
+            faculty (str): Name of the faculty
+        
+        Returns:
+            List of department names
+        """
+        query = f"""
+            SELECT DISTINCT departmentName
+            FROM `{self.dataset_id}.uni_list`
+            WHERE universityName = '{university_name}'
+            AND faculty = '{faculty}'
+        """
+        return [row['departmentName'] for row in self.execute_query(query)]
+
+    def get_languages(self, university_name: str, faculty: str, department: str) -> List[str]:
+        """
+        Retrieve available languages for a specific university, faculty, and department.
+        
+        Args:
+            university_name (str): Name of the university
+            faculty (str): Name of the faculty
+            department (str): Name of the department
+        
+        Returns:
+            List of language names
+        """
+        query = f"""
+            SELECT DISTINCT language
+            FROM `{self.dataset_id}.uni_list`
+            WHERE universityName = '{university_name}'
+            AND faculty = '{faculty}'
+            AND departmentName = '{department}'
+        """
+        return [row['language'] for row in self.execute_query(query)]
+
+    def get_scholarship_rates(
+        self, 
+        university_name: str, 
+        faculty: str, 
+        department: str, 
+        language: str
+    ) -> List[float]:
+        """
+        Retrieve available scholarship rates for a specific program.
+        
+        Args:
+            university_name (str): Name of the university
+            faculty (str): Name of the faculty
+            department (str): Name of the department
+            language (str): Program language
+        
+        Returns:
+            List of scholarship rates
+        """
+        query = f"""
+            SELECT DISTINCT scholarshipRate
+            FROM `{self.dataset_id}.uni_list`
+            WHERE universityName = '{university_name}'
+            AND faculty = '{faculty}'
+            AND departmentName = '{department}'
+            AND language = '{language}'
+        """
+        return [row['scholarshipRate'] for row in self.execute_query(query)]
+
+# Global database manager instance
+database_manager = DatabaseManager("bigquery_service_account.json")
