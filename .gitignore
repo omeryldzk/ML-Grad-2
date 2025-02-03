@@ -1,5 +1,24 @@
-# Ignore all CSV files
-*.csv
-
-# Ignore the .venv directory
+# Virtual Environment
 .venv/
+venv/
+ENV/
+
+# IDE Settings
+.idea/
+.vscode/
+*.code-workspace
+
+# Data files
+*.csv
+*.json
+*.xlsx
+*.xls
+
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Jupyter Notebook
+.ipynb_checkpoints
