@@ -1,0 +1,92 @@
+
+.selection-with-search{
+    position: relative;
+    margin-bottom: 2%;
+}
+
+
+.selection-with-search .results{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    border: var(--custom-yellow-dark) solid 2px;
+    border-radius: 6px;
+    background-color: var(--custom-yellow);
+    padding-left: 3%;
+    padding-right: 1%;
+    cursor: pointer;
+}
+
+.selection-with-search .results .results-group{
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+
+}
+
+.selection-with-search .results .results-group .x-mark p{
+    cursor: pointer;
+}
+
+.selection-with-search .results .results-group .x-mark p:hover{
+    background-color: var(--custom-yellow-dark);
+}
+
+.selection-with-search .form-title{
+    font-size: 17px;
+    font-weight: bold;
+    margin: 0%;
+    margin-bottom: 1%;
+}
+
+
+
+.input-with-dropdown{
+    position: absolute;
+    z-index: 10000;
+    width: 100.4%;
+
+}
+
+
+.input-with-dropdown .input-bar {
+    background: var(--background-color);
+    outline: var(--custom-yellow-dark) solid 2px;
+    border-radius: 2px;
+    border: none;
+    margin-left: 2px;
+    width: 103%;
+    height: 70%;
+    color: var(--text-color-hover);
+    transition: all .3s ease-in-out;
+}
+
+.input-with-dropdown .input-bar:focus {
+    outline: 2px solid var(--custom-red-dark);
+}
+
+.input-with-dropdown .select-list {
+    margin-top: 0;
+    width: 103.6%;
+    max-height: 100px; /* Set a fixed height to enable scrolling */
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--custom-yellow-dark) #eddaa4;
+    background: var(--custom-yellow);
+    list-style: none;
+    border: var(--custom-yellow-dark) solid 2px;
+    padding: 0;
+
+}
+
+.input-with-dropdown .select-list .clickable{
+    padding-left: 2%;
+
+    transition: background-color .3s ease-in-out, transform .3s ease-in-out, color .3s ease-in-out;
+}
+
+.input-with-dropdown .select-list .clickable:hover{
+    background: var(--custom-yellow-dark);
+    transform: scale(1.005);
+    color: var(--text-color-hover);
+}
