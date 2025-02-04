@@ -4,6 +4,7 @@
     justify-content: space-between;
     width: 100%;
     min-height: 50vh;
+    background-color: var(--background-color);
 
 }
 .select-program .title {

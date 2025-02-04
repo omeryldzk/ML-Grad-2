@@ -1,44 +1,38 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useState, useRef} from "react"
 import "../styles/InputWithDropdown.css"
 import useAxios from "../interceptors/AxiosInstance.tsx";
+import {Simulate} from "react-dom/test-utils";
+import close = Simulate.close;
 
 type Props = {
-    inputName: string,
     displayName: string,
+    selections: string[],
     setInput: React.Dispatch<React.SetStateAction<string | null>>,
+    input: string
 }
-/*
-function capitalizeFirstLetter(str:string) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
-*/
 
 
 const InputWithDropdown = (props:Props) => {
     const [query, setQuery] = useState<string | null>("");
-    const [showDropdown, setShowDropdown] = useState(false)
-    const [selections, setSelections] = useState<string[]>([])
+    const [showDropdown, setShowDropdown] = useState(false);
     const [filteredSelections, setFilteredSelections] = useState<string[]>([]);
     const [selected, setSelected] = useState<string | null>(null);
 
     useEffect(() => {
-        setSelections(["a", "b", "c", "d", "e", "f", "g", "h", "i"]);
-        setFilteredSelections(selections);
-    }, [])
-
-    useEffect(() => {
         if (query) {
             setFilteredSelections(
-                selections.filter((item) => item.toLowerCase().includes(query.toLowerCase()))
+                props.selections.filter((item) => item.toLowerCase().includes(query.toLowerCase()))
             )
         }
         else
-            setFilteredSelections(selections);
-    }, [query, selections]);
-    /*const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setQuery(value)
-    }*/
+            setFilteredSelections(props.selections);
+    }, [query, props.selections]);
+
+    useEffect(() => {
+        if (props.input === null)
+            setSelected(null)
+    }, [props.input]);
+
 
     const handleSelect = (value: string) => {
         props.setInput(value);
@@ -46,9 +40,29 @@ const InputWithDropdown = (props:Props) => {
         setSelected(value)
     }
 
+    const dropdownRef = useRef(null);
+
+    const handleClickOutside = (event: MouseEvent) => {
+        // If the click is outside the dropdown, hide it
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setShowDropdown(false);
+        }
+    };
+
+    useEffect(() => {
+        // Add the event listener for detecting clicks outside
+        document.addEventListener("mousedown", handleClickOutside);
+
+        // Clean up the event listener when the component unmounts
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+
     return (
 
-        <div className={"selection-with-search"}>
+        <div className={"selection-with-search"} ref={dropdownRef}>
             <div className={"form-title"}>{props.displayName + ":"}</div>
             <div className={"results"} onClick={() => setShowDropdown(!showDropdown)}>
                 <p>{selected === null ? "Please Select..." : selected}</p>
