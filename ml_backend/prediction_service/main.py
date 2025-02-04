@@ -35,22 +35,22 @@ def list_universities():
     """Retrieve list of available universities."""
     return database_manager.get_universities()
 
-@app.get("/faculties/{university_name}")
+@app.get("/faculties")
 def list_faculties(university_name: str):
     """Retrieve list of faculties for a specific university."""
     return database_manager.get_faculties(university_name)
 
-@app.get("/departments/{university_name}/{faculty}")
+@app.get("/departments")
 def list_departments(university_name: str, faculty: str):
     """Retrieve list of departments for a specific faculty and university."""
     return database_manager.get_departments(university_name, faculty)
 
-@app.get("/languages/{university_name}/{faculty}/{department}")
+@app.get("/languages")
 def list_languages(university_name: str, faculty: str, department: str):
     """Retrieve list of languages for a specific department."""
     return database_manager.get_languages(university_name, faculty, department)
 
-@app.get("/scholarships/{university_name}/{faculty}/{department}/{language}")
+@app.get("/scholarships")   
 def list_scholarships(university_name: str, faculty: str, department: str, language: str):
     """Retrieve list of scholarship rates for a specific program."""
-    return database_manager.get_scholarships(university_name, faculty, department, language)
+    return database_manager.get_scholarship_rates(university_name, faculty, department, language)
