@@ -24,7 +24,7 @@ const SelectProgram = () => {
         <div className="select-program">
             <div className="title">
                 <p>
-                Predict a the last persons ranking <br/> who will enter the selected program!
+                Predict ranking of the last person who will enter the selected program!
                 </p>
             </div>
             <div className="inputs">
