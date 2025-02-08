@@ -1,0 +1,66 @@
+.select-program {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 50vh;
+    background-color: var(--background-color);
+
+}
+.select-program .title {
+    width: 30%;           /* Set a width that forces wrapping if text exceeds it */
+    min-width: 10%;
+    margin-left: 15%;
+    white-space: normal;    /* Allows text to wrap to a new line */
+    overflow-wrap: break-word; /* Breaks long words if needed */
+    /* Optional: add padding or border for better visibility */
+    text-align: center;
+    font-weight: bold;
+    font-size: 40px;
+    margin-top: 16%;
+}
+
+
+.select-program .inputs {
+    display: flex;
+    width: 35%;
+    margin-right: 5%;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 7%;
+    margin-top: 5%;
+
+}
+
+.select-program .inputs button {
+    background: var(--custom-red);
+    border-radius: 10px;
+    font-size: 18px;
+    height: 40px;
+    width: 20%;
+    transform: translateX(30px);
+    box-shadow: var(--custom-red-dark) 2px 2px 4px ;
+    float: right;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+.select-program .inputs button:hover {
+    background: var(--custom-red-dark);
+}
+
+.select-program .inputs .selection p{
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.select-program .inputs .select {
+    height: 90%;
+    width: 100%;
+    background-color: var(--custom-yellow);
+    border-radius: 6px;
+    align-content: flex-start;
+
+}
+
+.select-program .inputs .select option {}
